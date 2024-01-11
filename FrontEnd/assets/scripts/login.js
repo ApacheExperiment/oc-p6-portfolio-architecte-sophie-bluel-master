@@ -48,4 +48,5 @@ document.addEventListener('DOMContentLoaded', function() {
       // Gère l'erreur ici
     });
   });
+  
 });

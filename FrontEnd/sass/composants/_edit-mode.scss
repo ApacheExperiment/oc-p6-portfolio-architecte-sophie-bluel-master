@@ -1,0 +1,27 @@
+.edition-menu {
+  z-index: 1;
+  transform: translateY(-1px);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 21px;
+  position: sticky;
+  top: 0;
+
+  height: 59px;
+  background-color: black;
+  color: white;
+  .fa-pen-to-square {
+    padding-right: 9px;
+  }
+}
+.modifier-button {
+  color: black;
+  height: 14px;
+  margin: 11px 0 10px 0;
+  background-color: white;
+  font-family: "work sans";
+  padding: 0 23px;
+  border: none;
+}
