@@ -32,28 +32,30 @@ function filterWorksByCategory(categoryId) {
 }
 
 fetchCategories()
-  .then(categories => {
-    const filterMenu = document.getElementById("filterMenu");
+.then(categories => {
+  const filterMenu = document.getElementById("filterMenu");
 
-    // Ajoute un bouton "Tous" pour afficher tous les travaux
-    const allButton = document.createElement("button");
-    allButton.textContent = "Tous";
-    allButton.addEventListener("click", () => {
-      console.log(`Bouton "Tous" cliqué.`);
-      displayAllWorks(); // Appelle la fonction pour afficher tous les travaux
-    });
-    filterMenu.appendChild(allButton);
+  // Ajoute un bouton "Tous" pour afficher tous les travaux
+  const allButton = document.createElement("button");
+  allButton.textContent = "Tous";
+  allButton.classList.add("buttonFilters"); // Ajoute la classe "buttonFilters" au bouton
+  allButton.addEventListener("click", () => {
+    console.log(`Bouton "Tous" cliqué.`);
+    displayAllWorks(); // Appelle la fonction pour afficher tous les travaux
+  });
+  filterMenu.appendChild(allButton);
 
-    // Crée des boutons pour chaque catégorie récupérée
-    categories.forEach(category => {
-      const button = document.createElement("button");
-      button.textContent = category.name;
-      button.addEventListener("click", () => {
-        console.log(`Bouton "${category.name}" cliqué.`);
-        filterWorksByCategory(category.id); // Appelle la fonction de filtrage avec l'ID de la catégorie
-      });
-      filterMenu.appendChild(button);
+  // Crée des boutons pour chaque catégorie récupérée
+  categories.forEach(category => {
+    const button = document.createElement("button");
+    button.textContent = category.name;
+    button.classList.add("buttonFilters"); // Ajoute la classe "buttonFilters" au bouton
+    button.addEventListener("click", () => {
+      console.log(`Bouton "${category.name}" cliqué.`);
+      filterWorksByCategory(category.id); // Appelle la fonction de filtrage avec l'ID de la catégorie
     });
+    filterMenu.appendChild(button);
+  });
   })
   .catch(error => {
     console.error('Erreur de récupération des catégories:', error);

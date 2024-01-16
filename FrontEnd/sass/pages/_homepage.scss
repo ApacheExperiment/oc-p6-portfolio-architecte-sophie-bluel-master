@@ -1,36 +1,38 @@
 #introduction {
   display: flex;
   align-items: center;
-}
-#introduction figure {
-  flex: 1;
-}
-#introduction img {
-  display: block;
-  margin: auto;
-  width: 80%;
-}
 
-#introduction article {
-  flex: 1;
-}
-#introduction h2 {
-  margin-bottom: 1em;
-}
+  & figure {
+    flex: 1;
+  }
+  & img {
+    display: block;
+    margin: auto;
+    width: 80%;
+  }
 
-#introduction p {
-  margin-bottom: 0.5em;
+  & article {
+    flex: 1;
+  }
+  & h2 {
+    margin-bottom: 1em;
+  }
+
+  & p {
+    margin-bottom: 0.5em;
+  }
 }
 #portfolio h2 {
   text-align: center;
-  margin-bottom: 1em;
+  margin-bottom: 53px;
+  margin-top: 150px;
 }
 #filterMenu {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
-button {
+.buttonFilters {
   font-family: "Syne";
   font-weight: 700;
   font-size: 16px;
@@ -43,11 +45,12 @@ button {
   text-align: center;
   border-radius: 60px;
   transition: 0.2s;
-}
-button:hover {
-  color: #fffef8;
-  background-color: #1d6154;
-  cursor: pointer;
+
+  &:hover {
+    color: #fffef8;
+    background-color: #1d6154;
+    cursor: pointer;
+  }
 }
 .gallery {
   width: 100%;
@@ -55,42 +58,42 @@ button:hover {
   grid-template-columns: 1fr 1fr 1fr;
   grid-column-gap: 20px;
   grid-row-gap: 20px;
-}
 
-.gallery img {
-  width: 100%;
+  & img {
+    width: 100%;
+  }
 }
 #contact {
   width: 50%;
   margin: auto;
-}
-#contact > * {
-  text-align: center;
-}
-#contact h2 {
-  margin-bottom: 20px;
-}
-#contact form {
-  text-align: left;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-}
 
-#contact input {
-  height: 50px;
-  font-size: 1.2em;
-  border: none;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#contact label {
-  margin: 2em 0 1em 0;
-}
-#contact textarea {
-  border: none;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
+  & > * {
+    text-align: center;
+  }
+  & h2 {
+    margin-bottom: 20px;
+  }
+  & form {
+    text-align: left;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+  }
 
+  & input {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  }
+  & label {
+    margin: 2em 0 1em 0;
+  }
+  & textarea {
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+  }
+}
 input[type="submit"] {
   font-family: "Syne";
   font-weight: 700;
@@ -100,41 +103,45 @@ input[type="submit"] {
   width: 180px;
   text-align: center;
   border-radius: 60px;
-}
-input:hover {
-  cursor: pointer;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 #login,
 .login {
   width: 40%;
   margin: 130px auto;
-}
-#login > * {
-  text-align: center;
-}
-#login h2 {
-  margin-bottom: 20px;
-}
-#login form {
-  text-align: left;
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-}
 
-#login input {
-  height: 50px;
-  font-size: 1.2em;
-  border: none;
-  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-}
-#login label {
-  margin: 2em 0 1em 0;
-}
-#login a {
-  color: #3d3d3d;
-  display: flex;
-  justify-content: center;
+  & > * {
+    text-align: center;
+  }
+  & h2 {
+    margin-bottom: 20px;
+  }
+  & form {
+    text-align: left;
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & input {
+    height: 50px;
+    font-size: 1.2em;
+    border: none;
+    box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+    margin-bottom: 20px;
+    margin-top: 10px;
+  }
+  &label {
+    margin: 2em 0 1em 0;
+  }
+  & a {
+    color: #3d3d3d;
+    display: flex;
+    justify-content: center;
+  }
 }
 footer nav ul {
   display: flex;

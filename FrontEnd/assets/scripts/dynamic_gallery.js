@@ -24,7 +24,7 @@ function handleData(data) {
 
 fetchWorks()
   .then(data => {
-    // Traitement des travaux ici...
+    // Traitement des travaux ici
     handleData(data);
   })
   .catch(error => {
