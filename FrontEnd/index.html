@@ -20,12 +20,12 @@
 
     <script
       type="module"
-      src="./assets/scripts/dynamic_gallery.js"
+      src="./assets/scripts/dynamicGallery.js"
       defer
     ></script>
     <script
       type="module"
-      src="./assets/scripts/filters_category.js"
+      src="./assets/scripts/filtersCategory.js"
       defer
     ></script>
     <script
@@ -33,8 +33,8 @@
       src="./assets/scripts/pageHomeConnected.js"
       defer
     ></script>
-    <script src="./assets/scripts/modale.js" defer></script>
-    <script src="./assets/scripts/modalApi.js" defer></script>
+    <script src="./assets/scripts/modal.js" defer></script>
+    <script src="./assets/scripts/addPhotos.js" defer></script>
   </head>
   <body>
     <header>
@@ -90,7 +90,10 @@
             <div class="gallery-modal"></div>
             <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
             <div class="marge-top">
-              <button class="addPhotos">Ajouter une photo</button>
+              <button class="addPhotos" onclick="showAddForm ()">
+                Ajouter une photo
+              </button>
+              <div id="addFormContainer"></div>
             </div>
           </div>
         </div>

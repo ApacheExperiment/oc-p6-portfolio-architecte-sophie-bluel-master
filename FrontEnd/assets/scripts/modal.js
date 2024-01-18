@@ -9,51 +9,51 @@ function fetchWorks() {
   function displayWorks(works) {
     const modalBody = document.querySelector('.modal.open .modal-body .gallery-modal');
   
-    // Clear existing content
+    // Efface le contenu existant
     modalBody.innerHTML = '';
   
-    // Create elements for each work and append to modal body
+    // Créer des éléments pour chaque travaux et les ajoute au container de la modal
     works.forEach(work => {
-        // Create a container div for each work
+        // Créer une div pour chaque oeuvre 
         const workContainer = document.createElement('div');
         workContainer.classList.add('work-item');
         
-        // Create a square container for the delete icon
+        // Créer un container "carré" pour la corbeille
         const squareContainer = document.createElement('div');
         squareContainer.classList.add('square-container');
 
-        // Create delete icon element
+        // Intégration de l'icone corbeille
         const deleteIcon = document.createElement('i');
         deleteIcon.classList.add('fa-solid', 'fa-trash-can');
         deleteIcon.addEventListener('click', () => deleteWork(work.id)); // Assuming you have a deleteWork function
         
-        // Append delete icon to square container
+        // Ajoute l'icone corbeille au "carré"
         squareContainer.appendChild(deleteIcon);
 
-        // Create image element
+        // Créer et implémente les images de la galerie dans la modal
         const imageElement = document.createElement('img');
         imageElement.src = work.imageUrl;
-        imageElement.alt = work.title; // Use work title as alt text for accessibility
+        imageElement.alt = work.title; // Ajoute à "alt" le titre de chaque travaux pour l'accessibiltié
                 
-        // Append elements to the container
+        // Ajouts des éléments précédents au container 
         workContainer.appendChild(imageElement);
         workContainer.appendChild(squareContainer);
 
-        // Append container to modal body
+        // Le container est ajouté à au corps de la modal
         modalBody.appendChild(workContainer);
     });
   }
- // Open modal by id and fetch works
+ // La modal est ouverte par l'id et la fonction fetchWorks
 function openModal(id) {
     const modal = document.getElementById(id);
     modal.classList.add('open');
     document.body.classList.add('modal-open');
   
-    // Fetch and display works when the modal is opened
+    // La fonction fetch et son contenu est affiché lors de l'ouverture de la modal
     fetchWorks();
   }
   
-  // close currently open modal
+  // Fonction pour fermer la modal
   function closeModal() {
     const openModal = document.querySelector('.modal.open');
     if (openModal) {
@@ -62,14 +62,34 @@ function openModal(id) {
     }
   }
   
-    // Function to handle work deletion (adjust as needed)
+    // Fonction de suppression 
     function deleteWork(workId) {
-        // Implement the logic to delete the work with the given ID
-        console.log('Deleting work with ID:', workId);
+      // Suppression dans la modal
+      const workContainer = document.querySelector(`.work-item[data-work-id="${workId}"]`);
+      if (workContainer) {
+        workContainer.remove();
+      }
+      // Suppression dans la galerie
+      const galleryFigure = document.querySelector(`.gallery figure[data-work-id="${workId}"]`);
+      if (galleryFigure) {
+        galleryFigure.remove();
+      }
+      // Appel à l'API pour supprimer le travail côté serveur
+      fetch(`http://localhost:5678/api/works/${workId}`, {
+        method: 'DELETE',
+      })
+        .then(response => {
+          if (!response.ok) {
+            console.error('Erreur lors de la suppression du travail côté serveur.');
+          }
+        })
+        .catch(error => {
+          console.error('Erreur lors de la suppression du travail côté serveur:', error);
+        });
     }
 
   window.addEventListener('load', function() {
-    // close modals on background click
+    // Action de fermeture au clic hors de la modal
     document.addEventListener('click', event => {
       if (event.target.classList.contains('modal')) {
         closeModal();

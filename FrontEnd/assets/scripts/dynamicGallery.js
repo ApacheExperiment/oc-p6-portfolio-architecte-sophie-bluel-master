@@ -14,7 +14,9 @@ function handleData(data) {
     image.alt = mesProjets.title;
     figcaption.textContent = mesProjets.title;
 
+    // Ajout de l'attribut data-work-id à la figure
     figure.dataset.categoryId = mesProjets.categoryId;
+    figure.dataset.workId = mesProjets.id; // Ajout de l'attribut data-work-id
 
     figure.appendChild(image);
     figure.appendChild(figcaption);

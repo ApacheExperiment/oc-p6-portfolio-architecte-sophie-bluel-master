@@ -423,7 +423,6 @@ footer nav ul {
   align-items: center;
   justify-content: space-between;
   position: relative;
-  padding: 20px;
   background: #fff;
   width: 630px;
   height: 688px;
@@ -437,6 +436,13 @@ footer nav ul {
   top: 30px;
   right: 30px;
 }
+.modal-body .fa-arrow-left {
+  font-size: 21px;
+  cursor: pointer;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
 .modal-body .title-gallery {
   color: black;
   font-family: "work sans";
@@ -447,7 +453,7 @@ footer nav ul {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap: 10px;
-  grid-row-gap: 10px;
+  grid-row-gap: 29px;
 }
 .modal-body .gallery-modal img {
   width: 76px;
@@ -463,12 +469,13 @@ footer nav ul {
   right: 4px;
   background-color: black;
   justify-content: center;
-  padding: 1px 4px 3px 4px; /* Ajustez cette valeur selon vos préférences */
+  padding: 2.5px 4px 3px 4px; /* Ajustez cette valeur selon vos préférences */
   border-radius: 3px;
 }
 .modal-body .work-item .square-container .fa-trash-can {
   font-size: 11px;
   color: white;
+  cursor: pointer;
 }
 .modal-body .marge-top {
   width: 420px;
@@ -488,9 +495,85 @@ footer nav ul {
   text-align: center;
   border-radius: 60px;
   transition: 0.2s;
-  margin-bottom: 30px;
+  margin-bottom: 60px;
   margin-top: 30px;
   border-top: 1px solid #ddd;
+  cursor: pointer;
+}
+.modal-body .dlPhotos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #e8f1f6;
+  width: 420px;
+  height: 169px;
+}
+.modal-body .dlPhotos img {
+  width: 76px;
+  height: 76px;
+  margin-top: 15px;
+}
+.modal-body .dlPhotos_button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: #306685;
+  background-color: #cbd6dc;
+  border: 1px solid #cbd6dc;
+  height: 36px;
+  width: 173px;
+  text-align: center;
+  border-radius: 60px;
+  transition: 0.2s;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  cursor: pointer;
+}
+.modal-body .dlPhotos .formats {
+  font-size: 10px;
+  color: #444444;
+}
+.modal-body .photoTitle {
+  display: flex;
+  flex-direction: column;
+}
+.modal-body .photoTitle input {
+  width: 420px;
+  height: 51px;
+  margin-top: 8px;
+  border: none;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.modal-body .photoCategorie {
+  display: flex;
+  flex-direction: column;
+}
+.modal-body .photoCategorie select {
+  width: 420px;
+  height: 51px;
+  margin-top: 8px;
+  border: solid 18px white;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+.modal-body .buttonValider {
+  font-family: "Syne";
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+  background-color: #a7a7a7;
+  border: 1px solid #a7a7a7;
+  height: 37px;
+  width: 237px;
+  text-align: center;
+  border-radius: 60px;
+  transition: 0.2s;
+  margin-bottom: 60px;
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
+  cursor: pointer;
 }
 
 body.modal-open {
