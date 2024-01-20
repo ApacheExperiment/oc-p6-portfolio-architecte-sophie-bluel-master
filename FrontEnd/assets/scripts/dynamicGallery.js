@@ -5,18 +5,18 @@ function handleData(data) {
   const galerie = document.querySelector('.gallery'); // Sélectionne la galerie
 
   // Parcourt chaque objet pour ensuite modifier la galerie initiale dans le HTML
-  data.forEach(mesProjets => {
+  data.forEach((project) => {
     const figure = document.createElement('figure');
     const image = document.createElement('img');
     const figcaption = document.createElement('figcaption');
 
-    image.src = mesProjets.imageUrl;
-    image.alt = mesProjets.title;
-    figcaption.textContent = mesProjets.title;
+    image.src = project.imageUrl;
+    image.alt = project.title;
+    figcaption.textContent = project.title;
 
-    // Ajout de l'attribut data-work-id à la figure
-    figure.dataset.categoryId = mesProjets.categoryId;
-    figure.dataset.workId = mesProjets.id; // Ajout de l'attribut data-work-id
+    // Ajout de l'attribut workId à la figure
+    figure.dataset.categoryId = project.categoryId;
+    figure.dataset.workId = project.id; // Ajout de l'attribut workId
 
     figure.appendChild(image);
     figure.appendChild(figcaption);
@@ -25,10 +25,10 @@ function handleData(data) {
 }
 
 fetchWorks()
-  .then(data => {
+  .then((data) => {
     // Traitement des travaux ici
     handleData(data);
   })
-  .catch(error => {
+  .catch((error) => {
     console.error('Erreur de récupération des travaux:', error);
   });

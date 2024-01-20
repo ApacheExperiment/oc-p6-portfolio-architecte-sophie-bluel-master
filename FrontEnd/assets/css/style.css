@@ -500,21 +500,34 @@ footer nav ul {
   border-top: 1px solid #ddd;
   cursor: pointer;
 }
-.modal-body .dlPhotos {
+
+.modal-body-addPhotos {
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-radius: 5px;
+  justify-content: space-between;
+  position: relative;
+  background: #fff;
+  width: 630px;
+  height: 688px;
+  border-radius: 10px;
+  margin: auto;
+}
+.modal-body-addPhotos .dlPhotos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 3px;
   background-color: #e8f1f6;
   width: 420px;
   height: 169px;
 }
-.modal-body .dlPhotos img {
+.modal-body-addPhotos .dlPhotos img {
   width: 76px;
   height: 76px;
   margin-top: 15px;
 }
-.modal-body .dlPhotos_button {
+.modal-body-addPhotos .dlPhotos_button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -532,33 +545,33 @@ footer nav ul {
   margin-top: 5px;
   cursor: pointer;
 }
-.modal-body .dlPhotos .formats {
+.modal-body-addPhotos .dlPhotos .formats {
   font-size: 10px;
   color: #444444;
 }
-.modal-body .photoTitle {
+.modal-body-addPhotos .photoTitle {
   display: flex;
   flex-direction: column;
 }
-.modal-body .photoTitle input {
+.modal-body-addPhotos .photoTitle input {
   width: 420px;
   height: 51px;
   margin-top: 8px;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.modal-body .photoCategorie {
+.modal-body-addPhotos .photoCategorie {
   display: flex;
   flex-direction: column;
 }
-.modal-body .photoCategorie select {
+.modal-body-addPhotos .photoCategorie select {
   width: 420px;
   height: 51px;
   margin-top: 8px;
   border: solid 18px white;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.modal-body .buttonValider {
+.modal-body-addPhotos .buttonValider {
   font-family: "Syne";
   font-weight: 700;
   font-size: 16px;

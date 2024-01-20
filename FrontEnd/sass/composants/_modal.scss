@@ -99,11 +99,24 @@
       cursor: pointer;
     }
   }
+}
+.modal-body-addPhotos {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background: #fff;
+  width: 630px;
+  height: 688px;
+  border-radius: 10px;
+  margin: auto;
+
   .dlPhotos {
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 3px;
     background-color: #e8f1f6;
     width: 420px;
     height: 169px;
@@ -177,7 +190,6 @@
     cursor: pointer;
   }
 }
-
 body.modal-open {
   overflow: hidden;
 }

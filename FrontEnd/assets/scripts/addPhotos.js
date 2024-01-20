@@ -1,6 +1,5 @@
 let previousModalContent; // Variable pour stocker le contenu de la modal précédente
 
-
 // Fonction pour afficher le formulaire d'ajout et cacher le bouton
   function showAddForm() {
     window.addFormContainer = document.getElementById('addFormContainer');
@@ -13,14 +12,14 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
     const addForm = document.createElement('form');
     addForm.id = 'addForm';
     addForm.innerHTML = `
-        <div class="modal-body">
+        <div class="modal-body-addPhotos">
         <i onclick="goBackToGallery()" class="fa-solid fa-arrow-left"></i>
         <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
         <h1 class="title-gallery">Ajout photo</h1>
         <div class=dlPhotos>
-        <img src="./assets/icons/addPhotos.png" alt="icone d'ajout de photos" />
-        <input type="file" id="uploadPhotoInput" style="display: none;" accept="image/*">
+        <img src="./assets/icons/addPhotos.png" id="selectImage" alt="icone d'ajout de photos" />
         <label for="uploadPhotoInput" class="dlPhotos_button" >+ Ajouter photo</label>
+        <input type="file" id="uploadPhotoInput" style="display: none;" accept="image/jpg, image/png">
         <p class="formats">jpg, png : 4mo max </p>
         </div>
         <div class="photoTitle">
@@ -32,25 +31,51 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         <select id="categorie" name="categorie" required>
         </div>
         <option value="" disabled selected></option>
-        <option value="Objets">Objets</option>
-        <option value="Appartements">Appartements</option>
-        <option value="Hôtels & restaurants">Hôtels & restaurants</option>
+        
         </select>
         </div>
         <div class="marge-top">
-        <button type="button" class="buttonValider" onclick="addNewProject() style="background-color: #1D6154;">Valider</button>
+        <button type="button" class="buttonValider" onclick="addNewProject() ">Valider</button>
         
         </div>
     `;
     
     modalBody.appendChild(addForm);
+   
 
-    }
-    // Fonction pour revenir à la galerie depuis le formulaire d'ajout
-    function goBackToGallery() {
-        const modalBody = document.querySelector('.modal.open .modal-body');
-        modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
-    }
+    let selectImage = document.getElementById("selectImage");
+    let uploadPhotoInput = document.getElementById("uploadPhotoInput");
+
+    uploadPhotoInput.onchange = function () {
+      const selectedImage = uploadPhotoInput.files[0];
+  
+      if (selectedImage) {
+          // Mettre à jour l'image affichée
+          selectImage.src = URL.createObjectURL(selectedImage);
+  
+          // Supprimer les éléments liés à l'ajout de photos
+          const dlPhotosContainer = document.querySelector('.dlPhotos');
+          dlPhotosContainer.innerHTML = '';
+  
+          // Ajouter l'image dans la div
+          dlPhotosContainer.appendChild(selectImage);
+  
+          /// Ajuster la taille de l'image conformément aux styles CSS
+          selectImage.style.width = '129px';
+          selectImage.style.height = '169px';
+
+          // Supprimer la marge supérieure
+          selectImage.style.marginTop = '0';
+      }
+  };
+  
+}
+/*
+// Fonction pour revenir à la galerie depuis le formulaire d'ajout
+function goBackToGallery() {
+  const modalBody = document.querySelector('.modal.open .modal-body');
+  modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
+}
   // Fonction pour ajouter un nouveau projet
   function addNewProject() {
     const title = document.getElementById('title').value;
@@ -64,21 +89,9 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
     const uploadPhotoInput = document.getElementById('uploadPhotoInput');
     uploadPhotoInput.addEventListener('change', handleFileSelection);
     
-    function handleFileSelection() {
-      const dlPhotosDiv = document.querySelector('.dlPhotos');
-      const selectedFile = uploadPhotoInput.files[0];
     
-      if (selectedFile) {
-        // Créer un élément image pour afficher la photo sélectionnée
-        const selectedImage = document.createElement('img');
-        selectedImage.src = URL.createObjectURL(selectedFile);
-        selectedImage.alt = 'Image sélectionnée';
-    
-        // Remplacer le contenu actuel de dlPhotosDiv par la nouvelle image
-        dlPhotosDiv.innerHTML = '';
-        dlPhotosDiv.appendChild(selectedImage);
-      }
-    }
+  }
+
     // Envoyer une requête POST à l'API
     fetch('http://localhost:5678/api/works', {
       method: 'POST',
@@ -102,5 +115,4 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         // Gérer les erreurs
         console.error('Erreur lors de l\'ajout du projet:', error);
         alert('Erreur lors de l\'ajout du projet. Veuillez réessayer.');
-      });
-  }
+      });*/
