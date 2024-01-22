@@ -90,7 +90,7 @@ function deleteWork(workId) {
   fetch(`http://localhost:5678/api/works/${workId}`, {
     method: 'DELETE',
     headers: {
-      'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNTY2MDE2MCwiZXhwIjoxNzA1NzQ2NTYwfQ.UwJgpctuRGQS_8ipT0whvcY9qi83nxnWpA5tXbql_PY',
+      'Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwNTk0NTgxMiwiZXhwIjoxNzA2MDMyMjEyfQ.hlQgh0ihjrgvA7whgLUpI5uBx3S46Y5jkvhPka7-ty8',
     }
   })
     .then((response) => {

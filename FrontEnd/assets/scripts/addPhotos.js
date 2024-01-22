@@ -16,6 +16,7 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         <i onclick="goBackToGallery()" class="fa-solid fa-arrow-left"></i>
         <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
         <h1 class="title-gallery">Ajout photo</h1>
+        <form action="#" id="add-work-form">
         <div class=dlPhotos>
         <img src="./assets/icons/addPhotos.png" id="selectImage" alt="icone d'ajout de photos" />
         <label for="uploadPhotoInput" class="dlPhotos_button" >+ Ajouter photo</label>
@@ -29,19 +30,18 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         <div class="photoCategorie">
         <label for="categorie">Catégorie</label>
         <select id="categorie" name="categorie" required>
-        </div>
         <option value="" disabled selected></option>
-        
         </select>
         </div>
         <div class="marge-top">
-        <button type="button" class="buttonValider" onclick="addNewProject() ">Valider</button>
-        
+        <input type="submit" class="buttonValider" value="Valider" onclick="addNewProject() "/>
+        </form>
         </div>
     `;
-    
+   
     modalBody.appendChild(addForm);
    
+    
 
     let selectImage = document.getElementById("selectImage");
     let uploadPhotoInput = document.getElementById("uploadPhotoInput");
@@ -68,9 +68,38 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
           selectImage.style.marginTop = '0';
       }
   };
+ 
+  fetch('http://localhost:5678/api/categories', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+    },
+  })
+  .then(response => response.json())
+    .then(categories => {
+      const selectElement = addForm.querySelector('#categorie');
+
+      // Ajouter la nouvelle catégorie manuellement
+      const newCategory = {
+        id: 4,
+        name: "Bar & Restaurant"
+      };
+      categories.push(newCategory);
+
+      // Ajouter les options au menu déroulant
+      categories.forEach(category => {
+        const optionElement = document.createElement('option');
+        optionElement.value = category.id;
+        optionElement.text = category.name;
+        selectElement.add(optionElement);
+      });
+    })
+    .catch(error => {
+      console.error('Erreur lors de la récupération des catégories depuis l\'API:', error);
+    });
   
 }
-/*
+
 // Fonction pour revenir à la galerie depuis le formulaire d'ajout
 function goBackToGallery() {
   const modalBody = document.querySelector('.modal.open .modal-body');
@@ -80,39 +109,95 @@ function goBackToGallery() {
   function addNewProject() {
     const title = document.getElementById('title').value;
     const categorie = document.getElementById('categorie').value;
+    const uploadPhotoInput = document.getElementById('uploadPhotoInput');
 
     // Vérifier si les champs sont remplis
-    if (!title || !categorie) {
-      alert('Veuillez remplir tous les champs.');
+    if (!title || !categorie || !uploadPhotoInput.files[0]) {
+      alert('Veuillez remplir tous les champs et sélectionner une photo.');
       return;
     }
-    const uploadPhotoInput = document.getElementById('uploadPhotoInput');
-    uploadPhotoInput.addEventListener('change', handleFileSelection);
-    
-    
-  }
+    // Utiliser FormData pour rassembler les données du formulaire
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('categorie', categorie);
+    formData.append('image', uploadPhotoInput.files[0]);
+    // Sélectionne tous les éléments <figure> dans la galerie
+    const allFigures = Array.from(document.querySelectorAll('.gallery figure'));
 
+    // Vérifie si un élément avec le même workId existe déjà
+    const existingFigure = allFigures.find((figure) => figure.dataset.workId == workId);
+
+    // Si aucun élément n'a été trouvé, ajoute un nouvel élément
+    if (!existingFigure) {
+      // Crée un nouvel élément <figure>
+      const newFigure = document.createElement('figure');
+      newFigure.dataset.workId = workId; // Attribut un workId au nouvel élément
+
+      // Crée un élément <img> pour l'image
+      const newImage = document.createElement('img');
+      newImage.src = newImage; // Défini la source de l'image
+      newImage.alt = 'Nouvelle image'; // Défini l'attribut alt de l'image
+
+      // Ajoute l'élément <img> à l'élément <figure>
+      newFigure.appendChild(newImage);
+
+      // Ajoute l'élément <figure> à la galerie
+      const galleryContainer = document.querySelector('.gallery');
+      galleryContainer.appendChild(newFigure);
+    }
     // Envoyer une requête POST à l'API
-    fetch('http://localhost:5678/api/works', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: title,
-        categorie: categorie,
-        // Ajoutez d'autres champs si nécessaire
-      }),
+  fetch('http://localhost:5678/api/works', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Erreur lors de l\'ajout du projet.');
+      }
+      return response.json();
     })
-      .then(response => response.json())
-      .then(data => {
-        // Afficher un message de succès ou mettre à jour la galerie
-        alert('Projet ajouté avec succès!');
-        fetchWorks(); // Met à jour la galerie
-        closeModal(); // Ferme la modal après l'ajout
-      })
-      .catch(error => {
-        // Gérer les erreurs
-        console.error('Erreur lors de l\'ajout du projet:', error);
-        alert('Erreur lors de l\'ajout du projet. Veuillez réessayer.');
-      });*/
+    .then(data => {
+      // Afficher un message de succès
+      alert('Projet ajouté avec succès!');
+      
+      // Actualiser la galerie
+      fetchWorks();
+
+      updateModalImageList(data.imageUrl); // Met à jour la galerie modale
+
+      // Fermer la modal après l'ajout
+      closeModal();
+    })
+    .catch(error => {
+      // Gérer les erreurs
+      console.error('Erreur lors de l\'ajout du projet:', error);
+      alert('Erreur lors de l\'ajout du projet. Veuillez réessayer.');
+    });
+}
+function updateGalleryWithNewImage(newImageURL) {
+  // Code pour mettre à jour la galerie principale (gallery) avec la nouvelle image
+  const galleryContainer = document.querySelector('.gallery');
+
+  // Créer un nouvel élément d'image pour la galerie principale
+  const newImageGalleryElement = document.createElement('img');
+  newImageGalleryElement.src = newImageURL;
+  newImageGalleryElement.alt = 'Nouvelle image';
+
+  // Ajouter le nouvel élément d'image à la galerie principale
+  galleryContainer.appendChild(newImageGalleryElement);
+
+  // Appeler également la fonction pour mettre à jour la galerie modale
+  updateModalImageList(newImageURL);
+}
+function updateModalImageList(newImageURL) {
+  const modalImageList = document.querySelector('.gallery-modal');
+
+  // Créer un nouvel élément d'image
+  const newImageElement = document.createElement('img');
+  newImageElement.src = newImageURL;
+  newImageElement.alt = 'Nouvelle image';
+
+
+  // Ajouter le nouvel élément d'image à la liste des images dans la modale
+  modalImageList.appendChild(newImageElement);
+}

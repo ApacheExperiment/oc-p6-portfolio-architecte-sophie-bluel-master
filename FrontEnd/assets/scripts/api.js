@@ -1,5 +1,5 @@
 // Fonction pour récupérer les travaux depuis l'API
-function fetchWorks() {
+async function fetchWorks() {
   return fetch("http://localhost:5678/api/works")
     .then(response => {
       if (!response.ok) {
@@ -9,7 +9,7 @@ function fetchWorks() {
     });
 }
 // Fonction pour récupérer les catégories depuis l'API
-function fetchCategories() {
+async function fetchCategories() {
   return fetch("http://localhost:5678/api/categories")
     .then(response => {
       if (!response.ok) {
