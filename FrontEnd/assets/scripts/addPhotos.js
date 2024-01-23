@@ -16,7 +16,6 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         <i onclick="goBackToGallery()" class="fa-solid fa-arrow-left"></i>
         <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
         <h1 class="title-gallery">Ajout photo</h1>
-        <form action="#" id="add-work-form">
         <div class=dlPhotos>
         <img src="./assets/icons/addPhotos.png" id="selectImage" alt="icone d'ajout de photos" />
         <label for="uploadPhotoInput" class="dlPhotos_button" >+ Ajouter photo</label>
@@ -35,7 +34,6 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
         </div>
         <div class="marge-top">
         <input type="submit" class="buttonValider" value="Valider" onclick="addNewProject() "/>
-        </form>
         </div>
     `;
    
@@ -60,7 +58,7 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
           // Ajouter l'image dans la div
           dlPhotosContainer.appendChild(selectImage);
   
-          /// Ajuster la taille de l'image conformément aux styles CSS
+          /// Ajuste la taille de l'image au cadre dlPhotos
           selectImage.style.width = '129px';
           selectImage.style.height = '169px';
 
@@ -68,7 +66,15 @@ let previousModalContent; // Variable pour stocker le contenu de la modal préc�
           selectImage.style.marginTop = '0';
       }
   };
- 
+ // Récupère le token depuis le local storage
+ const authToken = localStorage.getItem('authToken');
+
+ // Vérifie si le token est présent
+ if (!authToken) {
+   console.error('Token d\'authentification manquant.');
+   // Gère l'absence de token, redirige vers la page de connexion
+   return;
+ }
   fetch('http://localhost:5678/api/categories', {
     method: 'GET',
     headers: {

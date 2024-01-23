@@ -20,8 +20,3 @@ async function fetchCategories() {
 }
 
 export { fetchWorks, fetchCategories };
-export function deleteWork(workId) {
-  return fetch(`http://localhost:5678/api/works/${workId}`, {
-    method: 'DELETE',
-  });
-}

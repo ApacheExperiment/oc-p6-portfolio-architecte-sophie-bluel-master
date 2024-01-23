@@ -21,10 +21,18 @@ document.addEventListener('DOMContentLoaded', function() {
     .then(response => response.json())
     .then(data => {
       if (data.token) {
-        // Si la réponse contient un token, stocke-le dans le localStorage
+        // Enregistre le token dans le local storage
         localStorage.setItem('authToken', data.token);
+        // Vérifie si le token est présent
+        if (!data.token) {
+          console.error('Token d\'authentification manquant.');
+          // Afficher un message d'erreur à l'utilisateur
+          alert('Erreur d\'authentification. Veuillez vérifier vos informations de connexion.');
+          return;
+        }
         // Redirige vers la page d'accueil ou une autre page sécurisée
         window.location.href = '../../index.html';
+
       } else {
         // Sélectionne la zone de login pour afficher l'erreur
         const loginDiv = document.getElementById('login');
