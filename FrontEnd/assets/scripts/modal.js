@@ -31,7 +31,7 @@ function displayWorks(works) {
     // Intégration de l'icone corbeille
     const deleteIcon = document.createElement('i');
     deleteIcon.classList.add('fa-solid', 'fa-trash-can');
-    deleteIcon.addEventListener('click', () => deleteWork(work.id)); // Assuming you have a deleteWork function
+    deleteIcon.addEventListener('click', () => deleteWork(work.id)); 
 
     // Ajoute l'icone corbeille au "carré"
     squareContainer.appendChild(deleteIcon);
@@ -85,7 +85,7 @@ function deleteWork(workId) {
   if (figureToDelete) {
     figureToDelete.remove();
   }
-
+const authToken = localStorage.getItem('authToken');
   // Appel à l'API pour supprimer le travail côté serveur
   fetch(`http://localhost:5678/api/works/${workId}`, {
     method: 'DELETE',

@@ -1,5 +1,6 @@
 import { fetchWorks } from './api.js';
 
+
 // Fonction pour traiter les données des travaux
 function handleData(data) {
   const galerie = document.querySelector('.gallery'); // Sélectionne la galerie
@@ -32,3 +33,5 @@ fetchWorks()
   .catch((error) => {
     console.error('Erreur de récupération des travaux:', error);
   });
+
+  

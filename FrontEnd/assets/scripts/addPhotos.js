@@ -22,7 +22,7 @@ let uploadPhotoInput; //
         <div class=dlPhotos>
           <img src="./assets/icons/addPhotos.png" id="selectImage" alt="icone d'ajout de photos" />
             <label for="uploadPhotoInput" class="dlPhotos_button" >+ Ajouter photo</label>
-              <input type="file" id="uploadPhotoInput" style="display: none;" accept="image/jpg, image/png">
+              <input type="file" id="uploadPhotoInput" name="image" style="display: none;" accept="image/jpg, image/png">
                 <p class="formats">jpg, png : 4mo max </p>
         </div>
         <div class="photoTitle">
@@ -70,6 +70,7 @@ let uploadPhotoInput; //
       }
   };
  
+
 // Récupère le token depuis le local storage
 const authToken = localStorage.getItem('authToken');
  // Vérifie si le token est présent
@@ -115,146 +116,137 @@ function goBackToGallery() {
   modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
 }
 
-function formIsValid() {
-  const titleInput = document.getElementById("title");
-  const title = titleInput.value;
-
-  if (title === "") {
-    alert("Veuillez saisir un titre.");
-    return false;
-  }
-
-  return true;
-}
-async function addNewProject() {
-  // Vérifier si le formulaire est valide
-  if (!formIsValid()) {
+async function addNewProject(formData) {
+  const authToken = localStorage.getItem('authToken');
+  if (!authToken) {
+    console.error('Token d\'authentification manquant.');
+    // Gére l'absence de token, rediriger vers la page de connexion
     return;
   }
 
-  // Récupère les informations du formulaire
-  const title = document.getElementById("title").value;
-  const categoryId = document.getElementById("category").value;
-
-  // Créer l'objet JSON à envoyer à l'API
-  const formData = new FormData();
-  formData.append("photo", uploadPhotoInput.files[0]);
-  formData.append("title", title);
-  formData.append("categoryId", categoryId);
-
-  // Envoi de la requête POST à l'API
-  const response = await fetch("http://localhost:5678/api/works", {
-    method: "POST",
+  try {
+  const answer = await fetch('http://localhost:5678/api/works', {
+    method: 'POST',
     headers: {
-      "Authorization": `Bearer ${sessionStorage.getItem("token")}`,
-      "Content-Type": "multipart/form-data",
+      "accept": "application/json",
+      "Authorization": `Bearer ${authToken}`,
+      
     },
     body: formData,
   });
-
-  // Traiter la réponse de l'API
-  if (response.status === 200) {
-    // Le projet a été créé avec succès
-    alert("Le projet a été créé avec succès.");
-  } else {
-    // Une erreur s'est produite
-    alert("Une erreur s'est produite lors de la création du projet.");
-  }
-}
-/*
-// Fonction pour ajouter un nouveau projet
-function addNewProject() {
-  const title = document.getElementById('title').value;
-  const categorie = document.getElementById('categorie').value;
-  const uploadPhotoInput = document.getElementById('uploadPhotoInput');
-
-  // Vérifier si les champs sont remplis
-  if (!title || !categorie || !uploadPhotoInput.files[0]) {
-    alert('Veuillez remplir tous les champs et sélectionner une photo.');
-    return;
-  }
-  // Utiliser FormData pour rassembler les données du formulaire
-  const formData = new FormData();
-  formData.append('title', title);
-  formData.append('categorie', categorie);
-  formData.append('image', uploadPhotoInput.files[0]);
-  // Sélectionne tous les éléments <figure> dans la galerie
-  const allFigures = Array.from(document.querySelectorAll('.gallery figure'));
-
-  // Vérifie si un élément avec le même workId existe déjà
-  const existingFigure = allFigures.find((figure) => figure.dataset.workId == workId);
-
-  // Si aucun élément n'a été trouvé, ajoute un nouvel élément
-  if (!existingFigure) {
-    // Crée un nouvel élément <figure>
-    const newFigure = document.createElement('figure');
-    newFigure.dataset.workId = workId; // Attribut un workId au nouvel élément
-
-    // Crée un élément <img> pour l'image
-    const newImage = document.createElement('img');
-    newImage.src = newImage; // Défini la source de l'image
-    newImage.alt = 'Nouvelle image'; // Défini l'attribut alt de l'image
-
-    // Ajoute l'élément <img> à l'élément <figure>
-    newFigure.appendChild(newImage);
-
-    // Ajoute l'élément <figure> à la galerie
-    const galleryContainer = document.querySelector('.gallery');
-    galleryContainer.appendChild(newFigure);
-  }
-  // Envoyer une requête POST à l'API
-fetch('http://localhost:5678/api/works', {
-  method: 'POST',
-  body: formData,
-})
-  .then(response => {
-    if (!response.ok) {
+  
+    if (!answer.ok) {
       throw new Error('Erreur lors de l\'ajout du projet.');
     }
-    return response.json();
-  })
-  .then(data => {
-    // Afficher un message de succès
-    alert('Projet ajouté avec succès!');
-    
-    // Actualiser la galerie
-    fetchWorks();
+  
+  const newProject = await response.json();
 
-    updateModalImageList(data.imageUrl); // Met à jour la galerie modale
-
-    // Fermer la modal après l'ajout
-    closeModal();
-  })
-  .catch(error => {
-    // Gérer les erreurs
+    // Mettre à jour la galerie avec le nouveau projet
+    updateGalleryWithNewProject(newProject);
+    // Mettre à jour la modal avec le nouveau projet
+    updateModalWithNewProject(newProject);
+  } catch (error) {
     console.error('Erreur lors de l\'ajout du projet:', error);
-    alert('Erreur lors de l\'ajout du projet. Veuillez réessayer.');
-  });
+    if (error.response && error.response.status === 400) {
+      // Les données du formulaire sont invalides
+      console.error('Les données du formulaire sont invalides.');
+    } else if (error.response && error.response.status === 500) {
+      // Le serveur API est indisponible ou ne répond pas
+      console.error('Le serveur API est indisponible ou ne répond pas.');
+    } else {
+      // Un autre problème est survenu
+      console.error('Un autre problème est survenu.');
+    }
+  }
 }
-function updateGalleryWithNewImage(newImageURL) {
-// Code pour mettre à jour la galerie principale (gallery) avec la nouvelle image
-const galleryContainer = document.querySelector('.gallery');
-
-// Créer un nouvel élément d'image pour la galerie principale
-const newImageGalleryElement = document.createElement('img');
-newImageGalleryElement.src = newImageURL;
-newImageGalleryElement.alt = 'Nouvelle image';
-
-// Ajouter le nouvel élément d'image à la galerie principale
-galleryContainer.appendChild(newImageGalleryElement);
-
-// Appeler également la fonction pour mettre à jour la galerie modale
-updateModalImageList(newImageURL);
+// Fonction pour valider le titre
+function validateTitle(title) {
+  const titleRegex = /^[a-zA-Z0-9\s-]+$/;
+  return titleRegex.test(title);
 }
-function updateModalImageList(newImageURL) {
-const modalImageList = document.querySelector('.gallery-modal');
 
-// Créer un nouvel élément d'image
-const newImageElement = document.createElement('img');
-newImageElement.src = newImageURL;
-newImageElement.alt = 'Nouvelle image';
+// Fonction pour valider la catégorie
+function validateCategory(category) {
+  return category !== '';
+}
 
+// Fonction pour valider l'image
+function validateImage(image) {
+  return image !== null && image.type === 'image/jpg' || image.type === 'image/png' && image.size <= 4194304;
+}
 
-// Ajouter le nouvel élément d'image à la liste des images dans la modale
-modalImageList.appendChild(newImageElement);
-}*/
+// Fonction pour soumettre le formulaire
+function handleFormSubmission(event) {
+  event.preventDefault();
+  const title = document.getElementById('title').value;
+  const category = document.getElementById('category').value;
+  const imageFile = document.getElementById('uploadPhotoInput').files[0];
+
+  // Validation des données
+  if (!validateTitle(title)) {
+    console.error('Le titre doit être non vide et ne contenir que des caractères alphanumériques et des espaces.');
+    return;
+  }
+
+  if (!validateCategory(category)) {
+    console.error('Veuillez sélectionner une catégorie.');
+    return;
+  }
+
+  if (!validateImage(imageFile)) {
+    console.error('L\'image doit être d\'un type valide (image/jpg ou image/png) et ne doit pas dépasser 4 Mo.');
+    return;
+  }
+
+  // Confirmation avant l'envoi
+  const confirmation = prompt('Confirmez-vous l\'envoi des données ?');
+  if (confirmation === 'oui') {
+    // Ajout d'une explication
+    const message = `Les données que vous allez envoyer seront utilisées pour ajouter une nouvelle photo à la galerie.`;
+    alert(message);
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('image', imageFile);
+
+    addNewProject(formData);
+  }
+}
+
+// Fonction pour soumettre le formulaire
+function handleFormSubmission(event) {
+  event.preventDefault();
+  const title = document.getElementById('title').value;
+  const category = document.getElementById('category').value;
+  const imageFile = document.getElementById('uploadPhotoInput').files[0];
+
+  // Validation des données
+  if (!validateTitle(title)) {
+    return;
+  }
+
+  if (!validateCategory(category)) {
+    return;
+  }
+
+  if (!validateImage(imageFile)) {
+    return;
+  }
+
+  // Confirmation avant l'envoi
+  const confirmation = prompt('Confirmez-vous l\'envoi des données ?');
+  if (confirmation === 'oui') {
+    // Ajout d'une explication
+    const message = `Les données que vous allez envoyer seront utilisées pour ajouter une nouvelle photo à la galerie.`;
+    alert(message);
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('category', category);
+    formData.append('image', imageFile);
+
+    addNewProject(formData);
+  }
+}
+
