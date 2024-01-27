@@ -30,13 +30,13 @@ let uploadPhotoInput; //
           <input type="text" id="title" name="title" required>
         </div>
         <div class="photoCategorie">
-          <label for="categorie">Catégorie</label>
+          <label for="category">Catégorie</label>
             <select id="category" name="category" required>
             <option value="" disabled selected></option>
             </select>
         </div>
           <div class="marge-top">
-            <input type="submit" class="buttonValider" value="Valider" onclick="addNewProject() "/>
+            <input type="submit" class="buttonValider" value="Valider" onclick="handleFormSubmission(event) "/>
           </div>
         </div>
     `;
@@ -125,43 +125,78 @@ async function addNewProject(formData) {
   }
 
   try {
-  const answer = await fetch('http://localhost:5678/api/works', {
+  const response = await fetch('http://localhost:5678/api/works', {
     method: 'POST',
     headers: {
       "accept": "application/json",
-      "Authorization": `Bearer ${authToken}`,
-      
+      "Authorization": `Bearer ${authToken}`
     },
     body: formData,
   });
   
-    if (!answer.ok) {
+    if (!response.ok) {
       throw new Error('Erreur lors de l\'ajout du projet.');
     }
-  
+  /*
   const newProject = await response.json();
 
     // Mettre à jour la galerie avec le nouveau projet
     updateGalleryWithNewProject(newProject);
     // Mettre à jour la modal avec le nouveau projet
     updateModalWithNewProject(newProject);
+    // Afficher l'image dans la galerie et la modal sans rechargement de la page
+    const imageUrl = newProject.image; // Renvoi de l'URL de la photo
+    displayImageInGallery(imageUrl);
+    displayImageInModal(imageUrl);*/
+
+
   } catch (error) {
     console.error('Erreur lors de l\'ajout du projet:', error);
-    if (error.response && error.response.status === 400) {
-      // Les données du formulaire sont invalides
-      console.error('Les données du formulaire sont invalides.');
-    } else if (error.response && error.response.status === 500) {
-      // Le serveur API est indisponible ou ne répond pas
-      console.error('Le serveur API est indisponible ou ne répond pas.');
-    } else {
-      // Un autre problème est survenu
-      console.error('Un autre problème est survenu.');
-    }
+    // Gérer les erreurs
   }
 }
+/*function updateGalleryWithNewProject(newProject) {
+  // Recherche la galerie pour l'ajout
+  const gallery = document.querySelector('.gallery');
+
+  if (!gallery) {
+    console.error('L\'élément de galerie n\'a pas été trouvé dans le document.');
+    return;
+  }
+
+  // Créez un nouvel élément image
+  const newImage = document.createElement('img');
+  newImage.src = newProject.image; // Récupère l'URL de l'image
+  newImage.alt = newProject.title; // Récupère le titre de l'image
+
+  // Ajoutez la nouvelle image à la galerie
+  gallery.appendChild(newImage);
+}
+
+
+function updateModalWithNewProject(newProject) {
+  // Sélectionne l'élément de modal
+  const modal = document.querySelector('.modal');
+
+  if (!modal) {
+    console.error('L\'élément de modal n\'a pas été trouvé dans le document.');
+    return;
+  }
+
+  // Efface le contenu actuel de la modal
+  modal.innerHTML = '';
+
+  // Créez un nouvel élément image
+  const newImage = document.createElement('img');
+  newImage.src = newProject.image; // Récupère l'URL de l'image
+  newImage.alt = newProject.title; // Récupère le titre de l'image
+
+  // Ajoutez la nouvelle image à la modal
+  modal.appendChild(newImage);
+}*/
 // Fonction pour valider le titre
 function validateTitle(title) {
-  const titleRegex = /^[a-zA-Z0-9\s-]+$/;
+  const titleRegex = /^[a-zA-Z0-9_&\s-]+$/;
   return titleRegex.test(title);
 }
 
@@ -172,7 +207,14 @@ function validateCategory(category) {
 
 // Fonction pour valider l'image
 function validateImage(image) {
-  return image !== null && image.type === 'image/jpg' || image.type === 'image/png' && image.size <= 4194304;
+   // Vérifie si le type de fichier commence par 'image/' (vérifie si c'est une image)
+   const isImage = image.type.startsWith('image/');
+  
+   // Vérifie si la taille de l'image est inférieure ou égale à 4 Mo (4 * 1024 * 1024 octets)
+   const isSizeValid = image.size <= 4 * 1024 * 1024; // 4 Mo en octets
+   
+   // Retourne vrai si c'est une image et si sa taille est valide, sinon faux
+   return isImage && isSizeValid;
 }
 
 // Fonction pour soumettre le formulaire
@@ -180,7 +222,7 @@ function handleFormSubmission(event) {
   event.preventDefault();
   const title = document.getElementById('title').value;
   const category = document.getElementById('category').value;
-  const imageFile = document.getElementById('uploadPhotoInput').files[0];
+  const imageFile = uploadPhotoInput.files[0];
 
   // Validation des données
   if (!validateTitle(title)) {
@@ -199,11 +241,8 @@ function handleFormSubmission(event) {
   }
 
   // Confirmation avant l'envoi
-  const confirmation = prompt('Confirmez-vous l\'envoi des données ?');
+  const confirmation = prompt('Confirmez-vous le nouveau projet ?');
   if (confirmation === 'oui') {
-    // Ajout d'une explication
-    const message = `Les données que vous allez envoyer seront utilisées pour ajouter une nouvelle photo à la galerie.`;
-    alert(message);
 
     const formData = new FormData();
     formData.append('title', title);
@@ -212,41 +251,7 @@ function handleFormSubmission(event) {
 
     addNewProject(formData);
   }
-}
-
-// Fonction pour soumettre le formulaire
-function handleFormSubmission(event) {
-  event.preventDefault();
-  const title = document.getElementById('title').value;
-  const category = document.getElementById('category').value;
-  const imageFile = document.getElementById('uploadPhotoInput').files[0];
-
-  // Validation des données
-  if (!validateTitle(title)) {
-    return;
-  }
-
-  if (!validateCategory(category)) {
-    return;
-  }
-
-  if (!validateImage(imageFile)) {
-    return;
-  }
-
-  // Confirmation avant l'envoi
-  const confirmation = prompt('Confirmez-vous l\'envoi des données ?');
-  if (confirmation === 'oui') {
-    // Ajout d'une explication
-    const message = `Les données que vous allez envoyer seront utilisées pour ajouter une nouvelle photo à la galerie.`;
-    alert(message);
-
-    const formData = new FormData();
-    formData.append('title', title);
-    formData.append('category', category);
-    formData.append('image', imageFile);
-
-    addNewProject(formData);
-  }
+  // Fermer la modale
+closeModal();
 }
 
