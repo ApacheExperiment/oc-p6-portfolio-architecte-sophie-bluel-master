@@ -116,6 +116,7 @@ function goBackToGallery() {
   modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
 }
 
+
 async function addNewProject(formData) {
   const authToken = localStorage.getItem('authToken');
   if (!authToken) {
@@ -137,63 +138,22 @@ async function addNewProject(formData) {
     if (!response.ok) {
       throw new Error('Erreur lors de l\'ajout du projet.');
     }
-  /*
-  const newProject = await response.json();
 
-    // Mettre à jour la galerie avec le nouveau projet
-    updateGalleryWithNewProject(newProject);
-    // Mettre à jour la modal avec le nouveau projet
-    updateModalWithNewProject(newProject);
-    // Afficher l'image dans la galerie et la modal sans rechargement de la page
-    const imageUrl = newProject.image; // Renvoi de l'URL de la photo
-    displayImageInGallery(imageUrl);
-    displayImageInModal(imageUrl);*/
+  // Récupérez les détails du nouveau travail ajouté depuis la réponse
+  const newWork = await response.json();
 
+  // Déclenchez un événement personnalisé pour informer que de nouveaux travaux ont été ajoutés
+  const event = new CustomEvent('newWorkAdded', { detail: { newWorks: [newWork] } });
+  document.dispatchEvent(event);
 
-  } catch (error) {
-    console.error('Erreur lors de l\'ajout du projet:', error);
-    // Gérer les erreurs
-  }
+  console.log('Nouveau projet ajouté avec succès !');
+} catch (error) {
+  console.error('Erreur lors de l\'ajout du projet:', error);
+  // Gérez les erreurs
 }
-/*function updateGalleryWithNewProject(newProject) {
-  // Recherche la galerie pour l'ajout
-  const gallery = document.querySelector('.gallery');
-
-  if (!gallery) {
-    console.error('L\'élément de galerie n\'a pas été trouvé dans le document.');
-    return;
-  }
-
-  // Créez un nouvel élément image
-  const newImage = document.createElement('img');
-  newImage.src = newProject.image; // Récupère l'URL de l'image
-  newImage.alt = newProject.title; // Récupère le titre de l'image
-
-  // Ajoutez la nouvelle image à la galerie
-  gallery.appendChild(newImage);
 }
 
 
-function updateModalWithNewProject(newProject) {
-  // Sélectionne l'élément de modal
-  const modal = document.querySelector('.modal');
-
-  if (!modal) {
-    console.error('L\'élément de modal n\'a pas été trouvé dans le document.');
-    return;
-  }
-
-  // Efface le contenu actuel de la modal
-  modal.innerHTML = '';
-
-  // Créez un nouvel élément image
-  const newImage = document.createElement('img');
-  newImage.src = newProject.image; // Récupère l'URL de l'image
-  newImage.alt = newProject.title; // Récupère le titre de l'image
-
-  // Ajoutez la nouvelle image à la modal
-  modal.appendChild(newImage);
-}*/
 // Fonction pour valider le titre
 function validateTitle(title) {
   const titleRegex = /^[a-zA-Z0-9_&\s-]+$/;

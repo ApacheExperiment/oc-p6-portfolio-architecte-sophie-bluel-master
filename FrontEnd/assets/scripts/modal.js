@@ -49,11 +49,13 @@ function displayWorks(works) {
     modalBody.appendChild(workContainer);
   });
 }
+
 // La modal est ouverte par l'id et la fonction fetchWorks
 function openModal(id) {
   const modal = document.getElementById(id);
   modal.classList.add('open');
   document.body.classList.add('modal-open');
+  
 
   // La fonction fetch et son contenu est affiché lors de l'ouverture de la modal
   fetchWorks();
