@@ -1,5 +1,5 @@
 // modal.js
-function fetchWorks() {
+function fetchWorks() {   // Réutilisation de la fonction qui récupére les travaux depuis l'API
   fetch('http://localhost:5678/api/works')
     .then((response) => response.json())
     .then((works) => displayWorks(works))
@@ -63,6 +63,12 @@ function openModal(id) {
 
 // Fonction pour fermer la modal
 function closeModal() {
+
+  const modalBody = document.querySelector('.modal.open .modal-body');
+  if (modalBody) {
+    modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
+  }
+
   const openModal = document.querySelector('.modal.open');
   if (openModal) {
     openModal.classList.remove('open');

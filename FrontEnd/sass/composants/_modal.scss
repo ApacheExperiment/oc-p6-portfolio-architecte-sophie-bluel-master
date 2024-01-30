@@ -76,7 +76,7 @@
       }
     }
   }
-  .marge-top {
+  .addPhotos-container {
     width: 420px;
     margin-top: 30px;
     border-top: 2px solid #ddd;
@@ -100,7 +100,7 @@
     }
   }
 }
-.modal-body-addPhotos {
+#addForm {
   display: flex;
   flex-direction: column;
   align-items: center;

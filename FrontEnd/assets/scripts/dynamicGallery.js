@@ -6,9 +6,9 @@ function handleData(data) {
 
   // Parcourt chaque objet pour ensuite modifier la galerie initiale dans le HTML
   data.forEach((project) => {
-    const figure = document.createElement('figure');
-    const image = document.createElement('img');
-    const figcaption = document.createElement('figcaption');
+    const figure = document.createElement('figure'); // Créer l'élément figure
+    const image = document.createElement('img'); // Créer l'élément img
+    const figcaption = document.createElement('figcaption');// Créer l'élément figcaption
 
     image.src = project.imageUrl;
     image.alt = project.title;
@@ -18,18 +18,17 @@ function handleData(data) {
     figure.dataset.categoryId = project.categoryId;
     figure.dataset.workId = project.id; // Ajout de l'attribut workId
 
-    figure.appendChild(image);
-    figure.appendChild(figcaption);
+    figure.appendChild(image); // Ajoute l'élément image à la galerie
+    figure.appendChild(figcaption); // Ajoute l'élément figacaption à la galerie
     galerie.appendChild(figure); // Ajoute la figure à la galerie
   });
 }
 
-fetchWorks()
-  .then((data) => {
-    // Traitement des travaux ici
+fetchWorks() // Réutilisation de la fonction qui récupére les travaux depuis l'API
+  .then((data) => { // Traitement des travaux ici
     handleData(data);
   })
-  .catch((error) => {
+  .catch((error) => { // En cas d'erreur
     console.error('Erreur de récupération des travaux:', error);
   });
 
@@ -37,11 +36,11 @@ fetchWorks()
 function updateGalleryWithNewWorks(newWorks) {
   const galerie = document.querySelector('.gallery'); // Sélectionne la galerie
 
-  // Parcourt chaque nouvel objet pour ensuite ajouter à la galerie
+  // Boucle qui parcourt chaque nouvel objet pour ensuite ajouter à la galerie
   newWorks.forEach((project) => {
-    const figure = document.createElement('figure');
-    const image = document.createElement('img');
-    const figcaption = document.createElement('figcaption');
+    const figure = document.createElement('figure'); // Créer l'élément figure
+    const image = document.createElement('img'); // Créer l'élément img
+    const figcaption = document.createElement('figcaption'); // Créer l'élément figcaption
 
     image.src = project.imageUrl;
     image.alt = project.title;
@@ -51,17 +50,15 @@ function updateGalleryWithNewWorks(newWorks) {
     figure.dataset.categoryId = project.categoryId;
     figure.dataset.workId = project.id; // Ajout de l'attribut workId
 
-    figure.appendChild(image);
-    figure.appendChild(figcaption);
-    galerie.appendChild(figure); // Ajoute la figure à la galerie
+    figure.appendChild(image); // Ajoute l'élément image galerie
+    figure.appendChild(figcaption); // Ajoute l'élément figacaption à la galerie
+    galerie.appendChild(figure); // Ajoute l'élément figure à la galerie
   });
 
 }
 
-
-// Écoute les événements personnalisés "newWorkAdded" pour mettre à jour la galerie
+// Écoute de l'événement "newWorkAdded" pour mettre à jour la galerie
 document.addEventListener('newWorkAdded', (event) => {
   const newWorks = event.detail.newWorks;
   updateGalleryWithNewWorks(newWorks);
 });
-export { fetchWorks };

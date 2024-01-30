@@ -1,5 +1,4 @@
 @charset "UTF-8";
-/***Mixins-Variables***/
 /******General******/
 /* http://meyerweb.com/eric/tools/css/reset/
    v2.0 | 20110126
@@ -210,8 +209,8 @@ nav li:hover {
   color: #b1663c;
 }
 
-/******Layout******/
 /******Pages******/
+/* Home Page*/
 #introduction {
   display: flex;
   align-items: center;
@@ -368,6 +367,7 @@ footer nav ul {
 }
 
 /******Composants******/
+/* Mode Edition*/
 .edition-menu {
   z-index: 1;
   transform: translateY(-1px);
@@ -477,13 +477,13 @@ footer nav ul {
   color: white;
   cursor: pointer;
 }
-.modal-body .marge-top {
+.modal-body .addPhotos-container {
   width: 420px;
   margin-top: 30px;
   border-top: 2px solid #ddd;
   text-align: center;
 }
-.modal-body .marge-top .addPhotos {
+.modal-body .addPhotos-container .addPhotos {
   font-family: "Syne";
   font-weight: 700;
   font-size: 16px;
@@ -501,7 +501,7 @@ footer nav ul {
   cursor: pointer;
 }
 
-.modal-body-addPhotos {
+#addForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -513,7 +513,7 @@ footer nav ul {
   border-radius: 10px;
   margin: auto;
 }
-.modal-body-addPhotos .dlPhotos {
+#addForm .dlPhotos {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -522,12 +522,12 @@ footer nav ul {
   width: 420px;
   height: 169px;
 }
-.modal-body-addPhotos .dlPhotos img {
+#addForm .dlPhotos img {
   width: 76px;
   height: 76px;
   margin-top: 15px;
 }
-.modal-body-addPhotos .dlPhotos_button {
+#addForm .dlPhotos_button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -545,33 +545,33 @@ footer nav ul {
   margin-top: 5px;
   cursor: pointer;
 }
-.modal-body-addPhotos .dlPhotos .formats {
+#addForm .dlPhotos .formats {
   font-size: 10px;
   color: #444444;
 }
-.modal-body-addPhotos .photoTitle {
+#addForm .photoTitle {
   display: flex;
   flex-direction: column;
 }
-.modal-body-addPhotos .photoTitle input {
+#addForm .photoTitle input {
   width: 420px;
   height: 51px;
   margin-top: 8px;
   border: none;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.modal-body-addPhotos .photoCategorie {
+#addForm .photoCategorie {
   display: flex;
   flex-direction: column;
 }
-.modal-body-addPhotos .photoCategorie select {
+#addForm .photoCategorie select {
   width: 420px;
   height: 51px;
   margin-top: 8px;
   border: solid 18px white;
   box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.modal-body-addPhotos .buttonValider {
+#addForm .buttonValider {
   font-family: "Syne";
   font-weight: 700;
   font-size: 16px;
@@ -588,7 +588,7 @@ footer nav ul {
   border-top: 1px solid #ddd;
   cursor: pointer;
 }
-.modal-body-addPhotos .buttonValider:hover {
+#addForm .buttonValider:hover {
   color: #fffef8;
   background-color: #1d6154;
   border: 1px solid #1d6154;

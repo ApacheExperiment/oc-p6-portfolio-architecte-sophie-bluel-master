@@ -1,20 +1,20 @@
 let previousModalContent; // Variable pour stocker le contenu de la modal précédente
-let uploadPhotoInput; //
+let uploadPhotoInput; // Variable de l'input permettant de télécharger un document photo
 
 
-// Fonction pour afficher le formulaire d'ajout et cacher le bouton
+// Fonction pour afficher le formulaire d'ajout
   function showAddForm() {
-    window.addFormContainer = document.getElementById('addFormContainer');
-    const modalBody = document.querySelector('.modal.open .modal-body');
+   /* window.addFormContainer = document.getElementById('addFormContainer');*/
+    const modalBody = document.querySelector('.modal.open .modal-body'); //Sélectionne les propriétés de la modal
     previousModalContent = modalBody.innerHTML; // Sauvegarde le contenu de la modal précédente
 
-    modalBody.innerHTML = ''; // Efface le contenu existant
+   modalBody.innerHTML = ''; // Efface le contenu de la Galerie Photo présente dans la précédente modal 
 
-    // Créer le formulaire
+    // Création du formulaire
     const addForm = document.createElement('form');
     addForm.id = 'addForm';
     addForm.innerHTML = `
-        <div class="modal-body-addPhotos">
+        
           <i onclick="goBackToGallery()" class="fa-solid fa-arrow-left"></i>
           <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
             <h1 class="title-gallery">Ajout photo</h1>
@@ -35,13 +35,13 @@ let uploadPhotoInput; //
             <option value="" disabled selected></option>
             </select>
         </div>
-          <div class="marge-top">
+          <div class="addPhotos-container">
             <input type="submit" class="buttonValider" value="Valider" onclick="handleFormSubmission(event) "/>
           </div>
-        </div>
+        
     `;
    
-    modalBody.appendChild(addForm);
+    modalBody.appendChild(addForm); //Ajoute le formulaire à la modale
    
     let selectImage = document.getElementById("selectImage");
     uploadPhotoInput = document.getElementById("uploadPhotoInput");
@@ -53,11 +53,11 @@ let uploadPhotoInput; //
           // Mettre à jour l'image affichée
           selectImage.src = URL.createObjectURL(selectedImage);
   
-          // Supprimer les éléments liés à l'ajout de photos
+          // Supprime les éléments liés à l'ajout de photos
           const dlPhotosContainer = document.querySelector('.dlPhotos');
           dlPhotosContainer.innerHTML = '';
   
-          // Ajouter l'image dans la div
+          // Ajoute l'image dans la div
           dlPhotosContainer.appendChild(selectImage);
 
   
@@ -65,7 +65,7 @@ let uploadPhotoInput; //
           selectImage.style.width = '129px';
           selectImage.style.height = '169px';
 
-          // Supprimer la marge supérieure
+          // Supprime la marge supérieure
           selectImage.style.marginTop = '0';
       }
   };
@@ -89,14 +89,14 @@ const authToken = localStorage.getItem('authToken');
     .then(categories => {
       const selectElement = addForm.querySelector('#category');
 
-      // Ajouter la nouvelle catégorie manuellement
+      // Ajoute la nouvelle catégorie manuellement
       const newCategory = {
         id: 4,
         name: "Bar & Restaurant"
       };
       categories.push(newCategory);
 
-      // Ajouter les options au menu déroulant
+      // Ajoute les options au menu déroulant
       categories.forEach(category => {
         const optionElement = document.createElement('option');
         optionElement.value = category.id;
@@ -110,7 +110,7 @@ const authToken = localStorage.getItem('authToken');
   
 }
 
-// Fonction pour revenir à la galerie depuis le formulaire d'ajout
+// Fonction pour revenir à la galerie depuis le formulaire d'Ajout Photo
 function goBackToGallery() {
   const modalBody = document.querySelector('.modal.open .modal-body');
   modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
@@ -139,18 +139,19 @@ async function addNewProject(formData) {
       throw new Error('Erreur lors de l\'ajout du projet.');
     }
 
-  // Récupérez les détails du nouveau travail ajouté depuis la réponse
+  // Récupére les détails du nouveau travail ajouté depuis la réponse
   const newWork = await response.json();
 
-  // Déclenchez un événement personnalisé pour informer que de nouveaux travaux ont été ajoutés
+  // Déclenche un événement personnalisé pour informer que de nouveaux travaux ont été ajoutés
   const event = new CustomEvent('newWorkAdded', { detail: { newWorks: [newWork] } });
   document.dispatchEvent(event);
 
   console.log('Nouveau projet ajouté avec succès !');
 } catch (error) {
   console.error('Erreur lors de l\'ajout du projet:', error);
-  // Gérez les erreurs
+  // Gére les erreurs
 }
+
 }
 
 
@@ -187,21 +188,24 @@ function handleFormSubmission(event) {
   // Validation des données
   if (!validateTitle(title)) {
     console.error('Le titre doit être non vide et ne contenir que des caractères alphanumériques et des espaces.');
+    alert('Le titre doit être non vide et ne contenir que des caractères alphanumériques et des espaces.');
     return;
   }
 
   if (!validateCategory(category)) {
     console.error('Veuillez sélectionner une catégorie.');
+    alert('Veuillez sélectionner une catégorie.');
     return;
   }
 
   if (!validateImage(imageFile)) {
     console.error('L\'image doit être d\'un type valide (image/jpg ou image/png) et ne doit pas dépasser 4 Mo.');
+    alert('L\'image doit être d\'un type valide (image/jpg ou image/png) et ne doit pas dépasser 4 Mo.');
     return;
   }
 
   // Confirmation avant l'envoi
-  const confirmation = prompt('Confirmez-vous le nouveau projet ?');
+  const confirmation = prompt('Pour ajouter le projet veuilliez répondre "oui"');
   if (confirmation === 'oui') {
 
     const formData = new FormData();
@@ -211,7 +215,8 @@ function handleFormSubmission(event) {
 
     addNewProject(formData);
   }
-  // Fermer la modale
+  // Ferme la modale après l'ajout d'une photo
 closeModal();
+
 }
 
