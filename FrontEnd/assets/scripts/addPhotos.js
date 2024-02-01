@@ -1,3 +1,4 @@
+// Ajout de photo
 let previousModalContent; // Variable pour stocker le contenu de la modal précédente
 let uploadPhotoInput; // Variable de l'input permettant de télécharger un document photo
 
@@ -17,7 +18,7 @@ let uploadPhotoInput; // Variable de l'input permettant de télécharger un docu
         
           <i onclick="goBackToGallery()" class="fa-solid fa-arrow-left"></i>
           <i onclick="closeModal()" class="fa-solid fa-xmark"></i>
-            <h1 class="title-gallery">Ajout photo</h1>
+            <h3 class="title-gallery">Ajout photo</h3>
         
         <div class=dlPhotos>
           <img src="./assets/icons/addPhotos.png" id="selectImage" alt="icone d'ajout de photos" />
@@ -25,10 +26,10 @@ let uploadPhotoInput; // Variable de l'input permettant de télécharger un docu
               <input type="file" id="uploadPhotoInput" name="image" style="display: none;" accept="image/jpg, image/png">
                 <p class="formats">jpg, png : 4mo max </p>
         </div>
-        <div class="photoTitle">
-          <label for="title">Titre</label>
-          <input type="text" id="title" name="title" required>
-        </div>
+          <div class="photoTitle">
+            <label for="title">Titre</label>
+            <input type="text" id="title" name="title" required>
+          </div>
         <div class="photoCategorie">
           <label for="category">Catégorie</label>
             <select id="category" name="category" required>
@@ -43,13 +44,18 @@ let uploadPhotoInput; // Variable de l'input permettant de télécharger un docu
    
     modalBody.appendChild(addForm); //Ajoute le formulaire à la modale
    
+    // Sélection de l'élément d'image affichée et de l'input pour télécharger une photo
     let selectImage = document.getElementById("selectImage");
     uploadPhotoInput = document.getElementById("uploadPhotoInput");
 
+    // Événement déclenché lorsque le contenu de l'input de téléchargement de photo change
     uploadPhotoInput.onchange = function () {
+
+    // Récupération du fichier image sélectionné par l'utilisateur dans l'input
       const selectedImage = uploadPhotoInput.files[0];
   
-      if (selectedImage) {
+      if (selectedImage) {// Si une image a été sélectionnée
+        
           // Mettre à jour l'image affichée
           selectImage.src = URL.createObjectURL(selectedImage);
   
@@ -79,6 +85,7 @@ const authToken = localStorage.getItem('authToken');
    // Gère l'absence de token, redirige vers la page de connexion
    return;
  }
+ // Effectue une requête pour récupérer les catégories depuis l'API
   fetch('http://localhost:5678/api/categories', {
     method: 'GET',
     headers: {
@@ -86,7 +93,7 @@ const authToken = localStorage.getItem('authToken');
     },
   })
   .then(response => response.json())
-    .then(categories => {
+    .then(categories => {   // Sélectionne l'élément de menu déroulant pour les catégories dans le formulaire d'ajout
       const selectElement = addForm.querySelector('#category');
 
       // Ajoute la nouvelle catégorie manuellement
@@ -94,23 +101,24 @@ const authToken = localStorage.getItem('authToken');
         id: 4,
         name: "Bar & Restaurant"
       };
-      categories.push(newCategory);
+      categories.push(newCategory); // Ajoute la nouvelle catégorie à la liste des catégories récupérées depuis l'API
 
       // Ajoute les options au menu déroulant
       categories.forEach(category => {
         const optionElement = document.createElement('option');
         optionElement.value = category.id;
         optionElement.text = category.name;
-        selectElement.add(optionElement);
+        selectElement.add(optionElement); // Ajoute l'option au menu déroulant
       });
     })
     .catch(error => {
+        // Gère les erreurs survenues lors de la récupération des catégories depuis l'API
       console.error('Erreur lors de la récupération des catégories depuis l\'API:', error);
     });
   
 }
 
-// Fonction pour revenir à la galerie depuis le formulaire d'Ajout Photo
+// Fonction pour revenir à la modale galerie depuis le formulaire d'Ajout Photo
 function goBackToGallery() {
   const modalBody = document.querySelector('.modal.open .modal-body');
   modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
@@ -118,39 +126,39 @@ function goBackToGallery() {
 
 
 async function addNewProject(formData) {
-  const authToken = localStorage.getItem('authToken');
-  if (!authToken) {
-    console.error('Token d\'authentification manquant.');
-    // Gére l'absence de token, rediriger vers la page de connexion
-    return;
-  }
-
-  try {
-  const response = await fetch('http://localhost:5678/api/works', {
-    method: 'POST',
-    headers: {
-      "accept": "application/json",
-      "Authorization": `Bearer ${authToken}`
-    },
-    body: formData,
-  });
-  
-    if (!response.ok) {
-      throw new Error('Erreur lors de l\'ajout du projet.');
+    const authToken = localStorage.getItem('authToken');
+    if (!authToken) {
+      console.error('Token d\'authentification manquant.');
+      // Gére l'absence de token, rediriger vers la page de connexion
+      return;
     }
 
-  // Récupére les détails du nouveau travail ajouté depuis la réponse
-  const newWork = await response.json();
+    try {
+    const response = await fetch('http://localhost:5678/api/works', {
+      method: 'POST',
+      headers: {
+        "accept": "application/json",
+        "Authorization": `Bearer ${authToken}`
+      },
+      body: formData,
+    });
+    
+      if (!response.ok) {
+        throw new Error('Erreur lors de l\'ajout du projet.');
+      }
 
-  // Déclenche un événement personnalisé pour informer que de nouveaux travaux ont été ajoutés
-  const event = new CustomEvent('newWorkAdded', { detail: { newWorks: [newWork] } });
-  document.dispatchEvent(event);
+    // Récupére les détails du nouveau travail ajouté depuis la réponse
+    const newWork = await response.json();
 
-  console.log('Nouveau projet ajouté avec succès !');
-} catch (error) {
-  console.error('Erreur lors de l\'ajout du projet:', error);
-  // Gére les erreurs
-}
+    // Déclenche un événement pour informer qu'une nouvelle photo a été ajouté
+    const event = new CustomEvent('newWorkAdded', { detail: { newWorks: [newWork] } });
+    document.dispatchEvent(event);
+
+    console.log('Nouveau projet ajouté avec succès !');
+  } catch (error) {
+    console.error('Erreur lors de l\'ajout du projet:', error);
+    // Gére les erreurs
+  }
 
 }
 

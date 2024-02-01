@@ -1,3 +1,4 @@
+//Gallerie dynamique
 import { fetchWorks } from './api.js';
 
 // Fonction pour traiter les données des travaux
@@ -10,17 +11,18 @@ function handleData(data) {
     const image = document.createElement('img'); // Créer l'élément img
     const figcaption = document.createElement('figcaption');// Créer l'élément figcaption
 
-    image.src = project.imageUrl;
-    image.alt = project.title;
-    figcaption.textContent = project.title;
+    image.src = project.imageUrl; // Affecte l'URL de l'image du projet à la source de l'élément img
+    image.alt = project.title; // Définit le texte alternatif de l'image avec le titre du projet
+    figcaption.textContent = project.title; // Définit le texte de figcaption avec le titre du projet
 
-    // Ajout de l'attribut workId à la figure
+    // Ajoute l'identifiant de catégorie (workId) du projet aux données personnalisées de la figure
     figure.dataset.categoryId = project.categoryId;
-    figure.dataset.workId = project.id; // Ajout de l'attribut workId
+    figure.dataset.workId = project.id; // Ajout de l'attribut workId aux données personnalisées de la figure
 
-    figure.appendChild(image); // Ajoute l'élément image à la galerie
-    figure.appendChild(figcaption); // Ajoute l'élément figacaption à la galerie
-    galerie.appendChild(figure); // Ajoute la figure à la galerie
+
+    figure.appendChild(image); // Ajoute l'image à l'élément figure
+    figure.appendChild(figcaption); // Ajoute l'élément figcaption à la figure
+    galerie.appendChild(figure); // Ajoute l'élément figure à la galerie
   });
 }
 

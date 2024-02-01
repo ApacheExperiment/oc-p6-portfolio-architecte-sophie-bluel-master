@@ -157,7 +157,7 @@ header nav li img {
 header nav a {
   color: black;
   font-size: 16px;
-  font-weight: 400px;
+  font-weight: 400;
   text-decoration: none;
 }
 
@@ -448,6 +448,7 @@ footer nav ul {
   font-family: "work sans";
   font-size: 26px;
   margin-top: 50px;
+  font-weight: 800;
 }
 .modal-body .gallery-modal {
   display: grid;

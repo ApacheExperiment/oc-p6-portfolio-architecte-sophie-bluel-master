@@ -1,4 +1,6 @@
+// Requête poru récupérer les trvaux et les catégories
 // Fonction pour récupérer les travaux depuis l'API
+
 async function fetchWorks() {
   return fetch("http://localhost:5678/api/works")
     .then(response => {

@@ -1,3 +1,5 @@
+// Modification de la page d'accueil après connexion
+
 document.addEventListener('DOMContentLoaded', function() {
   const isLoggedIn = localStorage.getItem('authToken') !== null;
 
@@ -12,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
   if (htmlElement) {
     htmlElement.insertBefore(editionMenu, htmlElement.firstChild);
 
-     // Affiche le bouton de modification s'il est connecté
+     // Affiche le bouton de modification si la connexion est établis
      const modifierButton = document.querySelector('.modifier-button');
   if (modifierButton) {
     modifierButton.style.display = 'block';
@@ -20,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const mesProjetsHeader = document.querySelector('#portfolio h2');
           mesProjetsHeader.appendChild(modifierButton);
       
-      const filterMenu = document.querySelector('#filterMenu');
+      const filterMenu = document.querySelector('#filterMenu'); // Dissimule le bouton de filtrage
   if (filterMenu) {
     filterMenu.style.display = 'none';
   }

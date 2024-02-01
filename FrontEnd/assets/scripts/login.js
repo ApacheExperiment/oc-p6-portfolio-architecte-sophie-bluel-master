@@ -1,4 +1,5 @@
-document.addEventListener('DOMContentLoaded', function() {
+// Connexion utilisateur
+document.addEventListener('DOMContentLoaded', function() { // Charge 'login.html' avant pour interagir avec 'login.js'
   // Sélectionne le formulaire
   const loginForm = document.querySelector('#login form');
 
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email, password })
+      body: JSON.stringify({ email, password }) // Les données sont converties en chaîne JSON à l'aide de JSON.stringify()
     })
     .then(response => response.json())
     .then(data => {

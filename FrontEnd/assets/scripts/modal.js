@@ -1,4 +1,4 @@
-// modal.js
+// Modale et suppression de travaux
 function fetchWorks() {   // Réutilisation de la fonction qui récupére les travaux depuis l'API
   fetch('http://localhost:5678/api/works')
     .then((response) => response.json())
@@ -6,8 +6,8 @@ function fetchWorks() {   // Réutilisation de la fonction qui récupére les tr
     .catch((error) => console.error('Error fetching works:', error));
 }
 
-function displayWorks(works) {
-  const modalBody = document.querySelector(
+function displayWorks(works) { // Prend le tableau d'objet comprenant les oeuvres
+  const modalBody = document.querySelector( // Récupération de la modal
     '.modal.open .modal-body .gallery-modal'
   );
   if (!modalBody) {
@@ -53,8 +53,8 @@ function displayWorks(works) {
 // La modal est ouverte par l'id et la fonction fetchWorks
 function openModal(id) {
   const modal = document.getElementById(id);
-  modal.classList.add('open');
-  document.body.classList.add('modal-open');
+  modal.classList.add('open'); // Récupère la modale et l'ajoute à la classe open
+  document.body.classList.add('modal-open'); //Ajout d'une classe modal-open au body 
   
 
   // La fonction fetch et son contenu est affiché lors de l'ouverture de la modal
@@ -93,7 +93,7 @@ function deleteWork(workId) {
   if (figureToDelete) {
     figureToDelete.remove();
   }
-const authToken = localStorage.getItem('authToken');
+const authToken = localStorage.getItem('authToken'); //Récupère le jeton d'authentification à partir du stockage local
   // Appel à l'API pour supprimer le travail côté serveur
   fetch(`http://localhost:5678/api/works/${workId}`, {
     method: 'DELETE',
@@ -116,7 +116,7 @@ const authToken = localStorage.getItem('authToken');
     });
 }
 
-window.addEventListener('load', function () {
+window.addEventListener('load', function () { //écouteur d'événements qui se déclenche lorsque tous les éléments de la page ont été chargés
   // Action de fermeture au clic hors de la modal
   document.addEventListener('click', (event) => {
     if (event.target.classList.contains('modal')) {
