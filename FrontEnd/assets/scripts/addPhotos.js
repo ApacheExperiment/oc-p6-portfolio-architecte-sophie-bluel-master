@@ -4,7 +4,7 @@ let uploadPhotoInput; // Variable de l'input permettant de télécharger un docu
 
 
 // Fonction pour afficher le formulaire d'ajout
-  function showAddForm() {
+function showAddForm() {
    /* window.addFormContainer = document.getElementById('addFormContainer');*/
     const modalBody = document.querySelector('.modal.open .modal-body'); //Sélectionne les propriétés de la modal
     previousModalContent = modalBody.innerHTML; // Sauvegarde le contenu de la modal précédente
@@ -77,14 +77,14 @@ let uploadPhotoInput; // Variable de l'input permettant de télécharger un docu
   };
  
 
-// Récupère le token depuis le local storage
-const authToken = localStorage.getItem('authToken');
- // Vérifie si le token est présent
- if (!authToken) {
-   console.error('Token d\'authentification manquant.');
-   // Gère l'absence de token, redirige vers la page de connexion
-   return;
- }
+  // Récupère le token depuis le local storage
+  const authToken = localStorage.getItem('authToken');
+  // Vérifie si le token est présent
+  if (!authToken) {
+    console.error('Token d\'authentification manquant.');
+    // Gère l'absence de token, redirige vers la page de connexion
+    return;
+  }
  // Effectue une requête pour récupérer les catégories depuis l'API
   fetch('http://localhost:5678/api/categories', {
     method: 'GET',
@@ -213,16 +213,13 @@ function handleFormSubmission(event) {
   }
 
   // Confirmation avant l'envoi
-  const confirmation = prompt('Pour ajouter le projet veuilliez répondre "oui"');
-  if (confirmation === 'oui') {
-
     const formData = new FormData();
     formData.append('title', title);
     formData.append('category', category);
     formData.append('image', imageFile);
 
     addNewProject(formData);
-  }
+  
   // Ferme la modale après l'ajout d'une photo
 closeModal();
 

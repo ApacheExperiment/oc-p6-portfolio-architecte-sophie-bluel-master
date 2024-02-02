@@ -1,4 +1,4 @@
-// Filtres des cétégories
+// Filtres des catégories
 import { fetchCategories } from './api.js';
 
 // Fonction pour afficher tous les travaux
@@ -24,7 +24,7 @@ function filterWorksByCategory(categoryId) {
     console.log('workCategoryId:', workCategoryId); // Vérifier la valeur de workCategoryId
     console.log('categoryId:', categoryId); // Vérifier la valeur de categoryId
 
-    if (categoryId === "all" || workCategoryId === categoryId) {
+    if (workCategoryId === categoryId) {
       work.style.display = 'block'; // Affiche le travail si la catégorie correspond à "Tous" ou à la catégorie sélectionnée
     } else {
       work.style.display = 'none'; // Cache le travail s'il ne correspond pas à la catégorie sélectionnée
