@@ -2,12 +2,36 @@
 let previousModalContent; // Variable pour stocker le contenu de la modal précédente
 let uploadPhotoInput; // Variable de l'input permettant de télécharger un document photo
 
+// Fonction pour sauvegarder et restaurer le contenu précédent de la modal
+function managePreviousModalContent(action = 'save') {
+  const modalBody = document.querySelector('.modal.open .modal-body');
+  if (modalBody) {
+      if (action === 'save') {
+          previousModalContent = modalBody.innerHTML; // Sauvegarde le contenu de la modal précédente
+      } else if (action === 'restore') {
+          modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
+          fetchWorks(); // Réaffiche les travaux (photos) dans la modal
+      }
+  }
+}
+
+// Fonction pour ouvrir la modal
+function openModal(id) {
+  const modal = document.getElementById(id);
+  modal.classList.add('open'); // Ajoute la classe 'open' pour ouvrir la modal
+  document.body.classList.add('modal-open'); // Ajoute la classe 'modal-open' au corps du document
+  
+  managePreviousModalContent(); // Sauvegarde le contenu précédent de la modal chaque fois qu'elle est ouverte
+
+  // Affiche les travaux (photos) dans la modal si nécessaire
+  fetchWorks();
+}
 
 // Fonction pour afficher le formulaire d'ajout
 function showAddForm() {
    /* window.addFormContainer = document.getElementById('addFormContainer');*/
     const modalBody = document.querySelector('.modal.open .modal-body'); //Sélectionne les propriétés de la modal
-    previousModalContent = modalBody.innerHTML; // Sauvegarde le contenu de la modal précédente
+    
 
    modalBody.innerHTML = ''; // Efface le contenu de la Galerie Photo présente dans la précédente modal 
 
@@ -118,10 +142,9 @@ function showAddForm() {
   
 }
 
-// Fonction pour revenir à la modale galerie depuis le formulaire d'Ajout Photo
+// Fonction pour revenir à la galerie depuis le formulaire d'Ajout Photo
 function goBackToGallery() {
-  const modalBody = document.querySelector('.modal.open .modal-body');
-  modalBody.innerHTML = previousModalContent; // Restaure le contenu de la modal précédente
+  managePreviousModalContent('restore');
 }
 
 
