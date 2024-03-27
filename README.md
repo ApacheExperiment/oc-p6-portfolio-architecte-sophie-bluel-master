@@ -1,4 +1,4 @@
-OC-P6-Print-it
+OC-P6-Portfolio-Sophie-Bluel
 
 # Projet N°6 parcours intégrateur web OpenClassrooms
 
